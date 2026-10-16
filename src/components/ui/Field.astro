@@ -1,0 +1,84 @@
+---
+/**
+ * A labelled form control with hint and inline error slot. Inputs are 16 px
+ * and 48 px tall (docs/03 §5.7). The error element is referenced through
+ * aria-describedby so forms.ts can fill it.
+ */
+interface Option {
+  value: string;
+  label: string;
+}
+interface Props {
+  name: string;
+  label: string;
+  type?: 'text' | 'email' | 'tel' | 'select' | 'textarea';
+  required?: boolean;
+  hint?: string;
+  options?: Option[];
+  placeholder?: string;
+  autocomplete?: string;
+  inputmode?: 'text' | 'email' | 'tel';
+  rows?: number;
+  optionalLabel?: string;
+  class?: string;
+}
+const {
+  name,
+  label,
+  type = 'text',
+  required = false,
+  hint,
+  options = [],
+  placeholder,
+  autocomplete,
+  inputmode,
+  rows = 4,
+  optionalLabel,
+  class: cls,
+} = Astro.props;
+const id = `f-${name}`;
+const describedBy = [hint && `${id}-hint`, `${id}-error`].filter(Boolean).join(' ');
+---
+
+<div class:list={['field', cls]}>
+  <label for={id} class="field-label">
+    {label}
+    {!required && optionalLabel && <span class="field-optional"> ({optionalLabel})</span>}
+  </label>
+  {hint && (
+    <p id={`${id}-hint`} class="field-hint">
+      {hint}
+    </p>
+  )}
+  {type === 'select' ? (
+    <select id={id} name={name} required={required} aria-describedby={describedBy} class="control">
+      <option value="">—</option>
+      {options.map((o) => (
+        <option value={o.value}>{o.label}</option>
+      ))}
+    </select>
+  ) : type === 'textarea' ? (
+    <textarea
+      id={id}
+      name={name}
+      required={required}
+      rows={rows}
+      placeholder={placeholder}
+      aria-describedby={describedBy}
+      class="control"
+    />
+  ) : (
+    <input
+      id={id}
+      name={name}
+      type={type}
+      required={required}
+      placeholder={placeholder}
+      autocomplete={autocomplete}
+      inputmode={inputmode}
+      aria-describedby={describedBy}
+      class="control"
+    />
+  )}
+  <p id={`${id}-error`} class="field-error" aria-live="polite"></p>
+</div>

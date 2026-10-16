@@ -1,0 +1,10 @@
+dist/
+.astro/
+node_modules/
+references/
+docs/
+public/brand/
+package-lock.json
+playwright-report/
+test-results/
+.lighthouseci/

@@ -1,0 +1,12 @@
+---
+/** Status chip. Tier tones follow the truth tiers (docs/02 §2.2); `accent` follows the page. */
+interface Props {
+  tone?: 'original' | 'v2' | 'development' | 'exploring' | 'accent' | 'neutral';
+  class?: string;
+}
+const { tone = 'neutral', class: cls } = Astro.props;
+---
+
+<span class:list={['chip', tone !== 'neutral' && `chip-${tone}`, cls]}>
+  <slot />
+</span>

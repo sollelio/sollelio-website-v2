@@ -1,0 +1,131 @@
+---
+/**
+ * Beauty OS interest form (docs/08 decisions 12 and 22). Separate Netlify
+ * form name, same inbox. Confirms inline; submits nothing while `formMode`
+ * is `demo`.
+ */
+import Field from '../ui/Field.astro';
+import Button from '../ui/Button.astro';
+import { beauty } from '../../content/pages/beauty.ts';
+import { pathFor, type Locale } from '../../i18n/routes.ts';
+import { useTranslations } from '../../i18n/ui.ts';
+import { contactEmail, formMode, formNames } from '../../config/site.ts';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const c = beauty[locale].form;
+const t = useTranslations(locale);
+const netlify = formMode === 'netlify';
+const optional = t('form.optional');
+---
+
+<form
+  name={formNames.beauty}
+  method="POST"
+  action={netlify ? pathFor('beauty', locale) : undefined}
+  data-form
+  data-form-mode={formMode}
+  data-netlify={netlify ? 'true' : undefined}
+  netlify-honeypot={netlify ? 'website' : undefined}
+  data-msg-required={t('form.required')}
+  data-msg-email={t('form.email')}
+  data-msg-group={t('form.group')}
+  data-sending={t('form.sending')}
+  class="panel p-6 md:p-10"
+>
+  {netlify && <input type="hidden" name="form-name" value={formNames.beauty} />}
+  <input type="hidden" name="lang" value={locale} />
+  <input type="hidden" name="utm_source" value="" />
+  <input type="hidden" name="utm_medium" value="" />
+  <input type="hidden" name="utm_campaign" value="" />
+  <input type="hidden" name="referrer" value="" />
+  <input type="hidden" name="landing" value="" />
+  <p hidden data-honeypot>
+    <label>
+      Website <input name="website" tabindex="-1" autocomplete="off" />
+    </label>
+  </p>
+
+  <div data-form-fields>
+    {formMode === 'demo' && (
+      <div class="mb-8 rounded-card border border-line bg-bg-3 px-4 py-3 text-sm" role="note">
+        <strong>{t('form.demo.title')}.</strong> {t('form.demo.body')}
+      </div>
+    )}
+    <div class="grid gap-6 sm:grid-cols-2">
+      <Field name="nome" label={c.fields.name} required autocomplete="name" />
+      <Field name="salao" label={c.fields.salon} required autocomplete="organization" />
+      <Field
+        name="email"
+        type="email"
+        label={c.fields.email}
+        required
+        autocomplete="email"
+        inputmode="email"
+      />
+      <Field
+        name="telemovel"
+        type="tel"
+        label={c.fields.phone}
+        autocomplete="tel"
+        inputmode="tel"
+        optionalLabel={optional}
+      />
+    </div>
+    <div class="mt-6 flex flex-col gap-6">
+      <Field
+        name="mensagem"
+        type="textarea"
+        label={c.fields.message}
+        placeholder={c.fields.messagePlaceholder}
+        optionalLabel={optional}
+      />
+      <div class="field">
+        <label class="flex items-start gap-3 text-[0.9375rem]">
+          <input
+            type="checkbox"
+            name="privacidade"
+            id="b-privacidade"
+            required
+            class="checkbox"
+            aria-describedby="b-privacidade-error"
+          />
+          <span>
+            {c.fields.consent} <a href={pathFor('privacy', locale)}>{c.fields.consentLink}</a>
+          </span>
+        </label>
+        <p id="b-privacidade-error" class="field-error" aria-live="polite"></p>
+      </div>
+    </div>
+    <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
+      <Button type="submit" arrow>
+        {c.submit}
+      </Button>
+      <p class="text-sm text-ink-3">
+        {t('cta.email')} <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
+      </p>
+    </div>
+    <p class="mt-6 max-w-[70ch] text-sm text-ink-3">{c.privacy}</p>
+    <p
+      data-form-failure
+      hidden
+      tabindex="-1"
+      class="mt-6 rounded-card border border-line bg-bg-3 px-4 py-3 text-sm font-semibold"
+    >
+      {t('form.error')} <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
+    </p>
+  </div>
+
+  <div data-form-success hidden tabindex="-1" class="outline-none">
+    <p class="eyebrow">{c.eyebrow}</p>
+    <p class="h3 mt-4">{c.successTitle}</p>
+    <p class="mt-3 text-ink-2">{c.successBody}</p>
+  </div>
+</form>
+
+<script>
+  import { initForms } from '../../scripts/forms.ts';
+  initForms();
+</script>

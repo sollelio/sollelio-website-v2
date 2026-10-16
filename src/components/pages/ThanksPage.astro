@@ -1,0 +1,59 @@
+---
+/** Confirmation page (docs/08 decision 21). noindex; no personal data in the URL. */
+import Base from '../../layouts/Base.astro';
+import Button from '../ui/Button.astro';
+import { partners } from '../../content/pages/partners.ts';
+import { pathFor, type Locale } from '../../i18n/routes.ts';
+import { contactEmail } from '../../config/site.ts';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const c = partners[locale].thanks;
+---
+
+<Base
+  locale={locale}
+  route="partnersThanks"
+  product="events"
+  title={c.meta.title}
+  description={c.meta.description}
+  ogImage="/og/events.png"
+  ogImageAlt="Sollelio Events"
+>
+  <section class="container pt-14 pb-16 md:pt-24 md:pb-24">
+    <div class="grid gap-12 lg:grid-cols-[1.2fr_1fr] lg:gap-16">
+      <div>
+        <p class="eyebrow">{c.eyebrow}</p>
+        <h1 class="display mt-6 max-w-[14ch]">{c.title}</h1>
+        <p class="lead mt-7 max-w-[52ch]">{c.lead}</p>
+      </div>
+      <div class="panel p-6 md:p-8">
+        <h2 class="mono text-ink-3">{c.nextTitle}</h2>
+        <ol class="mt-4 divide-y divide-line">
+          {c.next.map((item, i) => (
+            <li class="grid grid-cols-[2.5rem_1fr] gap-3 py-4">
+              <span class="rows-n" aria-hidden="true">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <p>{item}</p>
+            </li>
+          ))}
+        </ol>
+        <h2 class="mono mt-8 text-ink-3">{c.meanwhileTitle}</h2>
+        <div class="mt-4 flex flex-col items-start gap-3">
+          <Button href={`${pathFor('events', locale)}#estado`} variant="secondary" arrow>
+            {c.events}
+          </Button>
+          <Button href={pathFor('beauty', locale)} variant="link">
+            {c.beauty}
+          </Button>
+        </div>
+        <p class="mt-6 text-sm text-ink-3">
+          {c.change} <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
+        </p>
+      </div>
+    </div>
+  </section>
+</Base>

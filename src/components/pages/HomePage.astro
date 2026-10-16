@@ -1,0 +1,238 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import Section from '../ui/Section.astro';
+import Button from '../ui/Button.astro';
+import Chip from '../ui/Chip.astro';
+import Rows from '../ui/Rows.astro';
+import ProductLockup from '../ui/ProductLockup.astro';
+import { home } from '../../content/pages/home.ts';
+import { events as eventsCopy } from '../../content/pages/events.ts';
+import { pathFor, type Locale } from '../../i18n/routes.ts';
+import { useTranslations } from '../../i18n/ui.ts';
+import { contactEmail, founder } from '../../config/site.ts';
+import proof from '../../assets/proof/do-luxo-a-mesa-evento.jpg';
+import dlm from '../../assets/partners/do-luxo-a-mesa.png';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const c = home[locale];
+const t = useTranslations(locale);
+const site = 'https://sollelio.com';
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'Sollelio',
+    url: site,
+    logo: `${site}/brand/sollelio-logo.svg`,
+    email: contactEmail,
+    areaServed: 'PT',
+    founder: { '@type': 'Person', name: founder.name, jobTitle: founder.title[locale] },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'Sollelio',
+    url: site,
+    inLanguage: ['pt-PT', 'en'],
+  },
+];
+---
+
+<Base
+  locale={locale}
+  route="home"
+  product="company"
+  title={c.meta.title}
+  description={c.meta.description}
+  ogImage="/og/sollelio.png"
+  ogImageAlt="Sollelio"
+  jsonLd={jsonLd}
+>
+  <!-- Hero -->
+  <section class="container pt-14 pb-16 md:pt-24 md:pb-24">
+    <div class="grid gap-12 lg:grid-cols-[1.25fr_1fr] lg:items-center lg:gap-16">
+      <div>
+        <p class="eyebrow">{c.hero.eyebrow}</p>
+        <h1 class="display mt-6 max-w-[16ch]">{c.hero.title}</h1>
+        <p class="lead mt-7 max-w-[58ch]">{c.hero.lead}</p>
+        <div class="mt-9 flex flex-wrap gap-3">
+          <Button href={pathFor('events', locale)} arrow>
+            {t('cta.events')}
+          </Button>
+          <Button href={pathFor('beauty', locale)} variant="secondary">
+            {t('cta.beauty')}
+          </Button>
+        </div>
+      </div>
+      <aside class="panel p-6 md:p-8" aria-labelledby="ledger-title">
+        <h2 id="ledger-title" class="mono text-ink-3">
+          {c.hero.ledgerTitle}
+        </h2>
+        <ul class="mt-4 divide-y divide-line">
+          <li class="py-5" data-product="events">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <ProductLockup product="events" height={34} />
+              <Chip tone="exploring">{c.hero.events.status}</Chip>
+            </div>
+            <p class="mt-3 text-[0.9375rem] text-ink-2">{c.hero.events.body}</p>
+            <a
+              href={pathFor('partners', locale)}
+              class="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-accent"
+            >
+              {c.hero.events.campaign}
+              <svg
+                viewBox="0 0 20 20"
+                width="16"
+                height="16"
+                aria-hidden="true"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+              >
+                <path d="M4 10h11M11 5l5 5-5 5" />
+              </svg>
+            </a>
+          </li>
+          <li class="pt-5" data-product="beauty">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <ProductLockup product="beauty" height={34} />
+              <Chip tone="v2">{c.hero.beauty.status}</Chip>
+            </div>
+            <p class="mt-3 text-[0.9375rem] text-ink-2">{c.hero.beauty.body}</p>
+          </li>
+        </ul>
+      </aside>
+    </div>
+  </section>
+
+  <!-- Campaign strip (time-bound, not the company's identity) -->
+  <section class="border-y border-line bg-bg-2" data-product="events">
+    <div class="container flex flex-wrap items-center gap-x-10 gap-y-5 py-6 md:py-7">
+      <div class="min-w-[18rem] flex-1">
+        <p class="eyebrow">{c.strip.eyebrow}</p>
+        <p class="mt-2 max-w-[72ch] text-[0.9375rem] text-ink-2">{c.strip.body}</p>
+      </div>
+      <Button href={pathFor('partners', locale)} variant="secondary" arrow>
+        {t('cta.programme')}
+      </Button>
+    </div>
+  </section>
+
+  <!-- Products -->
+  <Section
+    id="produtos"
+    eyebrow={c.products.eyebrow}
+    title={c.products.title}
+    lead={c.products.lead}
+  >
+    <div class="grid gap-6 md:grid-cols-2" data-stagger>
+      <article class="card flex flex-col p-7 md:p-9" data-product="events" data-reveal>
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <ProductLockup product="events" height={40} />
+          <Chip tone="exploring">{c.products.events.status}</Chip>
+        </div>
+        <h3 class="mt-8 text-[1.75rem] leading-[1.1] font-extrabold tracking-[-0.03em]">
+          {c.products.events.title}
+        </h3>
+        <p class="mt-4 text-ink-2">{c.products.events.body}</p>
+        <p class="mono mt-6 text-ink-3">{c.products.events.segments}</p>
+        <Button href={pathFor('events', locale)} class="mt-8 self-start" arrow>
+          {t('cta.events')}
+        </Button>
+      </article>
+      <article class="card flex flex-col p-7 md:p-9" data-product="beauty" data-reveal>
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <ProductLockup product="beauty" height={40} />
+          <Chip tone="v2">{c.products.beauty.status}</Chip>
+        </div>
+        <h3 class="mt-8 text-[1.75rem] leading-[1.1] font-extrabold tracking-[-0.03em]">
+          {c.products.beauty.title}
+        </h3>
+        <p class="mt-4 text-ink-2">{c.products.beauty.body}</p>
+        <p class="mono mt-6 text-ink-3">{c.products.beauty.segments}</p>
+        <Button href={pathFor('beauty', locale)} class="mt-8 self-start" arrow>
+          {t('cta.beauty')}
+        </Button>
+      </article>
+    </div>
+  </Section>
+
+  <!-- Method -->
+  <Section eyebrow={c.method.eyebrow} title={c.method.title} split class="border-t border-line">
+    <Rows items={c.method.rows} />
+  </Section>
+
+  <!-- Origin -->
+  <section class="section border-t border-line">
+    <div class="container grid items-center gap-10 lg:grid-cols-[1fr_1.4fr] lg:gap-16">
+      <div data-reveal>
+        <p class="eyebrow">{c.origin.eyebrow}</p>
+        <h2 class="h2 mt-4">{c.origin.title}</h2>
+        <div class="prose-site mt-6 text-ink-2">
+          {c.origin.body.map((p) => (
+            <p>{p}</p>
+          ))}
+        </div>
+        <div class="mt-8 flex items-center gap-4">
+          <Image src={dlm} alt="Do Luxo à Mesa" width={80} height={80} class="size-20" />
+          <p class="text-sm text-ink-3">Do Luxo à Mesa</p>
+        </div>
+      </div>
+      <figure class="figure" data-reveal>
+        <Image
+          src={proof}
+          alt={eventsCopy[locale].origin.figureAlt}
+          widths={[640, 960, 1280]}
+          sizes="(min-width: 1024px) 56vw, 100vw"
+          class="block h-auto w-full"
+        />
+        <figcaption class="flex flex-wrap items-center gap-3 border-t border-line p-4 text-sm text-ink-3">
+          <Chip tone="original">{c.origin.chip}</Chip>
+          <span>{c.origin.caption}</span>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- Founder -->
+  <section class="section-tight border-t border-line">
+    <div class="container grid gap-8 md:grid-cols-[minmax(0,20rem)_1fr] md:gap-16">
+      <div data-reveal>
+        <p class="eyebrow">{c.founder.eyebrow}</p>
+        <p class="h3 mt-4">{founder.name}</p>
+        <p class="text-ink-2">{founder.title[locale]}</p>
+      </div>
+      <blockquote class="scene max-w-[36ch] text-ink" data-reveal>
+        <p>{c.founder.note}</p>
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- Closing -->
+  <section class="section-tight border-t border-line">
+    <div class="container">
+      <div class="panel grid items-center gap-8 p-8 md:p-12 lg:grid-cols-[1.3fr_1fr]" data-reveal>
+        <div>
+          <h2 class="h2">{c.closing.title}</h2>
+          <p class="lead mt-4">{c.closing.body}</p>
+        </div>
+        <div class="flex flex-col items-start gap-3">
+          <Button href={pathFor('partners', locale)} arrow>
+            {c.closing.partners}
+          </Button>
+          <Button href={`${pathFor('beauty', locale)}#contacto`} variant="secondary">
+            {c.closing.beauty}
+          </Button>
+          <a href={`mailto:${contactEmail}`} class="btn btn-link">
+            {contactEmail}
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

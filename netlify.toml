@@ -1,0 +1,65 @@
+# Netlify configuration for sollelio.com (docs/05 §8).
+# No Netlify adapter: the site is fully static.
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22.22"
+
+# Keep Pretty URLs off: it rewrites `/about` to `/about/` and `/about.html` to
+# `/about/`, which would break the clean URL scheme (`/events`, `/en`). This
+# file setting overrides the UI setting (Netlify docs, file-based configuration).
+[build.processing.html]
+  pretty_urls = false
+
+# Duplicate file URLs that the live site serves with 200 today → clean URLs.
+[[redirects]]
+  from = "/index.html"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/events.html"
+  to = "/events"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/en.html"
+  to = "/en"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/en/events.html"
+  to = "/en/events"
+  status = 301
+  force = true
+
+# Forms: two Netlify Forms (`parceiros-fundadores-events`, `interesse-beauty-os`)
+# are declared in the page markup with data-netlify and a honeypot field. Enable
+# form detection in the Netlify UI and set the notification email there; no
+# function or backend is involved.
+
+# `www` → apex is handled by setting sollelio.com as the primary domain in the
+# Netlify UI (one hop), not here.
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # script-src and style-src are emitted per page as a <meta> CSP with hashes
+    # (Astro security.csp). frame-ancestors only works as a header.
+    Content-Security-Policy = "frame-ancestors 'none'"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+    # No Strict-Transport-Security here: it is not in the approved header set
+    # (docs/05 §8) and is hard to undo once browsers cache it. Founder decision.
+
+[[headers]]
+  for = "/_astro/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

@@ -1,0 +1,230 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Section from '../ui/Section.astro';
+import Button from '../ui/Button.astro';
+import Chip from '../ui/Chip.astro';
+import Rows from '../ui/Rows.astro';
+import Faq from '../ui/Faq.astro';
+import ProductLockup from '../ui/ProductLockup.astro';
+import ProofFigure from '../product/ProofFigure.astro';
+import { events } from '../../content/pages/events.ts';
+import { pathFor, type Locale } from '../../i18n/routes.ts';
+import { useTranslations } from '../../i18n/ui.ts';
+import { contactEmail } from '../../config/site.ts';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const c = events[locale];
+const t = useTranslations(locale);
+const partnersHref = pathFor('partners', locale);
+
+const faqs = (await getCollection('faq', (e) => e.data.product === 'programme'))
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 3)
+  .map((e) => ({ question: e.data.question[locale], answer: e.data.answer[locale] }));
+
+const site = 'https://sollelio.com';
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: 'Sollelio Events',
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'Web',
+    url: `${site}${pathFor('events', locale)}`,
+    description: c.meta.description,
+    publisher: { '@type': 'Organization', name: 'Sollelio', url: site },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.question,
+      acceptedAnswer: { '@type': 'Answer', text: f.answer },
+    })),
+  },
+];
+---
+
+<Base
+  locale={locale}
+  route="events"
+  product="events"
+  title={c.meta.title}
+  description={c.meta.description}
+  ogImage="/og/events.png"
+  ogImageAlt="Sollelio Events"
+  jsonLd={jsonLd}
+>
+  <!-- Hero -->
+  <section class="container pt-12 pb-14 md:pt-20 md:pb-20">
+    <ProductLockup product="events" height={44} />
+    <div class="mt-8 flex flex-wrap gap-2">
+      <Chip tone="exploring">{c.hero.statusChip}</Chip>
+      <Chip tone="accent">{c.hero.campaignChip}</Chip>
+    </div>
+    <div class="mt-6 grid gap-10 lg:grid-cols-[1.25fr_1fr] lg:items-end lg:gap-16">
+      <div>
+        <h1 class="display max-w-[15ch]">{c.hero.title}</h1>
+        <p class="lead mt-8 max-w-[58ch]">{c.hero.lead}</p>
+        <div class="mt-9 flex flex-wrap gap-3">
+          <Button href={partnersHref} arrow>
+            {t('cta.applyLong')}
+          </Button>
+          <Button href="#estado" variant="secondary">
+            {c.hero.secondary}
+          </Button>
+        </div>
+        <p class="mono mt-8 max-w-[60ch] text-ink-3">{c.hero.segments}</p>
+      </div>
+      <blockquote class="scene max-w-[26ch] text-ink lg:justify-self-end lg:pb-3">
+        <p>{c.reality.scene}</p>
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- In-page product bar -->
+  <nav class="product-bar" aria-label={c.bar.label}>
+    <div class="container flex items-center gap-1 overflow-x-auto py-2">
+      {c.bar.items.map((item) => (
+        <a href={item.href} class="nav-link whitespace-nowrap">
+          {item.label}
+        </a>
+      ))}
+      <a
+        href={partnersHref}
+        class="btn btn-primary ml-auto hidden min-h-9 px-3 text-sm sm:inline-flex"
+      >
+        {t('cta.apply')}
+      </a>
+    </div>
+  </nav>
+
+  <!-- The day to day -->
+  <Section id="dia-a-dia" eyebrow={c.reality.eyebrow} title={c.reality.title} split>
+    <h3 class="mono mb-3 text-ink-3">{c.reality.rowsTitle}</h3>
+    <Rows items={c.reality.rows} />
+    <p class="mt-5 text-sm text-ink-3">{c.reality.note}</p>
+  </Section>
+
+  <!-- Origin -->
+  <Section
+    id="origem"
+    eyebrow={c.origin.eyebrow}
+    title={c.origin.title}
+    class="border-t border-line"
+  >
+    <div class="prose-site -mt-6 mb-12 max-w-[62ch] text-ink-2 md:-mt-10" data-reveal>
+      {c.origin.body.map((p) => (
+        <p>{p}</p>
+      ))}
+    </div>
+    <ProofFigure
+      markers={c.origin.markers}
+      caption={c.origin.caption}
+      chip={c.origin.chip}
+      alt={c.origin.figureAlt}
+    />
+  </Section>
+
+  <!-- Where we stand -->
+  <Section
+    id="estado"
+    eyebrow={c.status.eyebrow}
+    title={c.status.title}
+    class="border-t border-line"
+  >
+    <div class="grid gap-5 md:grid-cols-3" data-stagger>
+      {c.status.items.map((item) => (
+        <article class="card p-6 md:p-7" data-reveal>
+          <p class="mono text-ink-3">{item.label}</p>
+          <Chip tone={item.tone} class="mt-3">
+            {item.chip}
+          </Chip>
+          <p class="mt-4 text-[0.9375rem] text-ink-2">{item.body}</p>
+        </article>
+      ))}
+    </div>
+    <p class="mt-6 text-sm text-ink-3">{c.status.note}</p>
+  </Section>
+
+  <!-- Programme summary (keeps the legacy #design-partners anchor) -->
+  <section id="design-partners" class="section border-t border-line">
+    <div class="container grid gap-10 lg:grid-cols-2 lg:gap-16">
+      <div data-reveal>
+        <p class="eyebrow">{c.programme.eyebrow}</p>
+        <h2 class="h2 mt-4">{c.programme.title}</h2>
+        <p class="lead mt-5">{c.programme.body}</p>
+        <div class="mt-8">
+          <Button href={partnersHref} arrow>
+            {c.programme.cta}
+          </Button>
+        </div>
+        <p class="mt-4 text-sm text-ink-3">{c.programme.responder}</p>
+      </div>
+      <ul
+        class="grid grid-cols-2 gap-px overflow-hidden rounded-panel border border-line bg-line"
+        data-reveal
+      >
+        {c.programme.terms.map((term) => (
+          <li class="bg-bg-2 p-6 md:p-7">
+            <strong class="block text-2xl font-extrabold tracking-[-0.03em] md:text-3xl">
+              {term.value}
+            </strong>
+            <span class="mt-1 block text-sm text-ink-2">{term.label}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- Who it is for -->
+  <Section
+    id="para-quem"
+    eyebrow={c.who.eyebrow}
+    title={c.who.title}
+    split
+    class="border-t border-line"
+  >
+    <ul class="grid grid-cols-2 gap-3 sm:grid-cols-3" data-stagger>
+      {c.who.segments.map((s) => (
+        <li class="card px-5 py-4 font-semibold" data-reveal>
+          {s}
+        </li>
+      ))}
+    </ul>
+    <p class="mt-6 text-sm text-ink-3">{c.who.note}</p>
+  </Section>
+
+  <!-- FAQ (three most asked; full list on the programme page) -->
+  <Section id="faq" eyebrow={c.faq.eyebrow} title={c.faq.title} split class="border-t border-line">
+    <Faq items={faqs} />
+    <a href={`${partnersHref}#faq`} class="btn btn-link mt-6">
+      {c.faq.all} →
+    </a>
+  </Section>
+
+  <!-- Closing -->
+  <section class="section-tight border-t border-line">
+    <div class="container">
+      <div class="panel grid items-center gap-8 p-8 md:p-12 lg:grid-cols-[1.3fr_1fr]" data-reveal>
+        <div>
+          <h2 class="h2">{c.closing.title}</h2>
+          <p class="lead mt-4">{c.closing.body}</p>
+        </div>
+        <div class="flex flex-col items-start gap-3">
+          <Button href={partnersHref} arrow>
+            {t('cta.applyLong')}
+          </Button>
+          <p class="text-sm text-ink-3">
+            {t('cta.email')} <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

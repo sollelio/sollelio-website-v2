@@ -1,0 +1,30 @@
+---
+/** Numbered editorial rows with hairlines (docs/04 §3, principle 5). */
+interface Item {
+  title: string;
+  body: string;
+  note?: string;
+}
+interface Props {
+  items: Item[];
+  /** Title and body side by side on wide screens. */
+  split?: boolean;
+  class?: string;
+}
+const { items, split = false, class: cls } = Astro.props;
+---
+
+<ol class:list={['rows', split && 'rows-split', cls]} data-stagger>
+  {items.map((item, i) => (
+    <li data-reveal>
+      <span class="rows-n" aria-hidden="true">
+        {String(i + 1).padStart(2, '0')}
+      </span>
+      <h3 class="h3">{item.title}</h3>
+      <div class:list={[!split && 'col-start-2']}>
+        <p class="text-ink-2">{item.body}</p>
+        {item.note && <p class="mono mt-3 text-ink-3">{item.note}</p>}
+      </div>
+    </li>
+  ))}
+</ol>

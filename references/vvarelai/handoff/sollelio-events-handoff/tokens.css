@@ -1,0 +1,51 @@
+/* Sollelio Events · design tokens (VVarelAI, 9 out 2026)
+   Fontes: https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap */
+:root {
+  /* Cores */
+  --bg: #F7F4EE;            /* fundo da página */
+  --paper: #EDECF5;         /* secção do sistema */
+  --white: #FFFFFF;         /* cartões, campos */
+  --ink: #25272B;           /* texto principal, botão do topo */
+  --muted: #585B66;         /* texto secundário */
+  --line: #DDDBE7;          /* linhas e contornos */
+  --accent: #3030A8;        /* etiquetas, destaques em texto */
+  --btn: #2457F5;           /* botões principais */
+  --btn-text: #FFFFFF;
+  --dark: #1A1D57;          /* secção final, números */
+  --on-dark: #F5F4FB;
+  --on-dark-muted: #C6C8E6;
+  --on-dark-line: rgba(245, 244, 251, 0.28);
+  --hero-veil: linear-gradient(180deg, rgba(20,22,74,.62) 0%, rgba(20,22,74,.58) 50%, rgba(20,22,74,.86) 100%);
+  --input-on-dark: rgba(14, 16, 58, 0.45);
+
+  /* Tipografia */
+  --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --h1: clamp(48px, 7.2vw, 112px);
+  --h2: clamp(34px, 3.8vw, 56px);
+  --h2-big: clamp(40px, 5vw, 76px);
+  --text: 17px;
+  --text-small: 15px;
+
+  /* Forma e espaço */
+  --radius-control: 10px;
+  --radius-shot: 14px;
+  --radius-card: 16px;
+  --radius-hero: 20px;
+  --control-h: 52px;
+  --section-y: clamp(64px, 8vw, 120px);
+  --section-x: clamp(20px, 4vw, 48px);
+  --content-max: 1240px;
+  --shadow-card: 0 40px 70px -30px rgba(0, 0, 0, 0.6);
+  --shadow-shot: 0 40px 80px -50px rgba(26, 29, 87, 0.35);
+}
+
+body   { background: var(--bg); color: var(--ink); font-family: var(--font-sans); }
+h1     { font-size: var(--h1); font-weight: 700; line-height: 1;    letter-spacing: -0.035em; }
+h2     { font-size: var(--h2); font-weight: 700; line-height: 1.04; letter-spacing: -0.03em; }
+.label { font-family: var(--font-mono); font-size: 12px; font-weight: 500;
+         letter-spacing: .1em; text-transform: uppercase; color: var(--accent); }
+.btn   { min-height: var(--control-h); padding: 0 22px; border: 0; border-radius: var(--radius-control);
+         background: var(--btn); color: var(--btn-text); font: 700 15px var(--font-sans); cursor: pointer; }
+.input { min-height: var(--control-h); padding: 0 16px; border-radius: var(--radius-control);
+         border: 1px solid var(--line); background: var(--white); font: 400 16px var(--font-sans); }

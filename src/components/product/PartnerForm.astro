@@ -1,0 +1,166 @@
+---
+/**
+ * Founding Design Partner application (docs/03 §5.2 with docs/08 decisions
+ * 6, 19, 20 and 21). Submits nothing while `formMode` is `demo`.
+ */
+import Field from '../ui/Field.astro';
+import PillGroup from '../ui/PillGroup.astro';
+import Button from '../ui/Button.astro';
+import { partners } from '../../content/pages/partners.ts';
+import { pathFor, type Locale } from '../../i18n/routes.ts';
+import { useTranslations } from '../../i18n/ui.ts';
+import { contactEmail, formMode, formNames } from '../../config/site.ts';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const c = partners[locale].form;
+const t = useTranslations(locale);
+const success = pathFor('partnersThanks', locale);
+const netlify = formMode === 'netlify';
+const optional = t('form.optional');
+---
+
+<form
+  name={formNames.partners}
+  method="POST"
+  action={netlify ? success : undefined}
+  data-form
+  data-form-mode={formMode}
+  data-success={success}
+  data-netlify={netlify ? 'true' : undefined}
+  netlify-honeypot={netlify ? 'website' : undefined}
+  data-msg-required={t('form.required')}
+  data-msg-email={t('form.email')}
+  data-msg-group={t('form.group')}
+  data-sending={t('form.sending')}
+  class="panel p-6 md:p-10"
+>
+  {netlify && <input type="hidden" name="form-name" value={formNames.partners} />}
+  <input type="hidden" name="lang" value={locale} />
+  <input type="hidden" name="utm_source" value="" />
+  <input type="hidden" name="utm_medium" value="" />
+  <input type="hidden" name="utm_campaign" value="" />
+  <input type="hidden" name="referrer" value="" />
+  <input type="hidden" name="landing" value="" />
+  <p hidden data-honeypot>
+    <label>
+      Website <input name="website" tabindex="-1" autocomplete="off" />
+    </label>
+  </p>
+
+  {formMode === 'demo' && (
+    <div class="mb-8 rounded-card border border-line bg-bg-3 px-4 py-3 text-sm" role="note">
+      <strong>{t('form.demo.title')}.</strong> {t('form.demo.body')}
+    </div>
+  )}
+
+  <div class="grid gap-6 sm:grid-cols-2">
+    <Field name="nome" label={c.fields.name} required autocomplete="name" />
+    <Field name="empresa" label={c.fields.company} required autocomplete="organization" />
+    <Field
+      name="funcao"
+      type="select"
+      label={c.fields.role}
+      options={c.fields.roleOptions}
+      required
+    />
+    <Field
+      name="email"
+      type="email"
+      label={c.fields.email}
+      required
+      autocomplete="email"
+      inputmode="email"
+    />
+    <Field
+      name="telemovel"
+      type="tel"
+      label={c.fields.phone}
+      hint={c.fields.phoneHint}
+      autocomplete="tel"
+      inputmode="tel"
+      optionalLabel={optional}
+    />
+    <Field
+      name="contacto"
+      type="select"
+      label={c.fields.contact}
+      options={c.fields.contactOptions}
+      required
+    />
+  </div>
+
+  <div class="mt-6 flex flex-col gap-6">
+    <PillGroup name="tipo" legend={c.fields.type} options={c.fields.typeOptions} required />
+    <div class="grid gap-6 sm:grid-cols-2">
+      <Field
+        name="eventos"
+        type="select"
+        label={c.fields.volume}
+        options={c.fields.volumeOptions}
+        required
+      />
+      <Field
+        name="distrito"
+        type="select"
+        label={c.fields.region}
+        options={c.fields.regionOptions}
+        optionalLabel={optional}
+      />
+    </div>
+    <PillGroup
+      name="gestao"
+      legend={c.fields.tools}
+      options={c.fields.toolsOptions}
+      optionalLabel={optional}
+    />
+    <Field
+      name="dor"
+      type="textarea"
+      label={c.fields.pain}
+      placeholder={c.fields.painPlaceholder}
+      optionalLabel={optional}
+    />
+    <div class="field">
+      <label class="flex items-start gap-3 text-[0.9375rem]">
+        <input
+          type="checkbox"
+          name="privacidade"
+          id="f-privacidade"
+          required
+          class="checkbox"
+          aria-describedby="f-privacidade-error"
+        />
+        <span>
+          {c.fields.consent} <a href={pathFor('privacy', locale)}>{c.fields.consentLink}</a>
+        </span>
+      </label>
+      <p id="f-privacidade-error" class="field-error" aria-live="polite"></p>
+    </div>
+  </div>
+
+  <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
+    <Button type="submit" arrow>
+      {c.submit}
+    </Button>
+    <p class="text-sm text-ink-3">
+      {c.emailAlt} <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
+    </p>
+  </div>
+  <p class="mt-6 max-w-[70ch] text-sm text-ink-3">{c.privacy}</p>
+  <p
+    data-form-failure
+    hidden
+    tabindex="-1"
+    class="mt-6 rounded-card border border-line bg-bg-3 px-4 py-3 text-sm font-semibold"
+  >
+    {t('form.error')} <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
+  </p>
+</form>
+
+<script>
+  import { initForms } from '../../scripts/forms.ts';
+  initForms();
+</script>

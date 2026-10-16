@@ -1,0 +1,150 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Section from '../ui/Section.astro';
+import Button from '../ui/Button.astro';
+import Rows from '../ui/Rows.astro';
+import Faq from '../ui/Faq.astro';
+import PartnerForm from '../product/PartnerForm.astro';
+import { partners } from '../../content/pages/partners.ts';
+import { pathFor, type Locale } from '../../i18n/routes.ts';
+import { useTranslations } from '../../i18n/ui.ts';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const c = partners[locale];
+const t = useTranslations(locale);
+
+const faqs = (await getCollection('faq', (e) => e.data.product === 'programme'))
+  .sort((a, b) => a.data.order - b.data.order)
+  .map((e) => ({ question: e.data.question[locale], answer: e.data.answer[locale] }));
+
+const site = 'https://sollelio.com';
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Sollelio Events',
+        item: `${site}${pathFor('events', locale)}`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: t('nav.partners'),
+        item: `${site}${pathFor('partners', locale)}`,
+      },
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.question,
+      acceptedAnswer: { '@type': 'Answer', text: f.answer },
+    })),
+  },
+];
+---
+
+<Base
+  locale={locale}
+  route="partners"
+  product="events"
+  title={c.meta.title}
+  description={c.meta.description}
+  ogImage="/og/events.png"
+  ogImageAlt="Sollelio Events"
+  jsonLd={jsonLd}
+>
+  <!-- Hero -->
+  <section class="container pt-12 pb-14 md:pt-20 md:pb-20">
+    <p class="eyebrow">{c.hero.eyebrow}</p>
+    <h1 class="display mt-6 max-w-[16ch]">{c.hero.title}</h1>
+    <div class="mt-8 grid gap-10 lg:grid-cols-[1.2fr_1fr] lg:items-start lg:gap-16">
+      <div>
+        <p class="lead max-w-[58ch]">{c.hero.lead}</p>
+        <p class="mt-4 text-[0.9375rem] font-semibold text-ink-2">{c.hero.geography}</p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <Button href="#candidatura" arrow>
+            {t('cta.toForm')}
+          </Button>
+          <Button href="#faq" variant="secondary">
+            {c.hero.secondary}
+          </Button>
+        </div>
+        <p class="mt-4 text-sm text-ink-3">{c.hero.responder}</p>
+      </div>
+      <ul class="grid grid-cols-2 gap-px overflow-hidden rounded-panel border border-line bg-line">
+        {c.hero.facts.map((f) => (
+          <li class="bg-bg-2 p-5 md:p-6">
+            <strong class="block text-2xl font-extrabold tracking-[-0.03em] md:text-3xl">
+              {f.value}
+            </strong>
+            <span class="mt-1 block text-sm text-ink-2">{f.label}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- Who it is for -->
+  <Section eyebrow={c.who.eyebrow} title={c.who.title} split class="border-t border-line">
+    <ul class="grid grid-cols-2 gap-3 sm:grid-cols-3" data-stagger>
+      {c.who.segments.map((s) => (
+        <li class="card px-5 py-4 font-semibold" data-reveal>
+          {s}
+        </li>
+      ))}
+    </ul>
+    <p class="mt-6 text-sm text-ink-3">{c.who.note}</p>
+  </Section>
+
+  <!-- What you get, what we ask -->
+  <Section eyebrow={c.exchange.eyebrow} title={c.exchange.title} class="border-t border-line">
+    <div class="grid gap-12 md:grid-cols-2 md:gap-16">
+      {[c.exchange.give, c.exchange.ask].map((col) => (
+        <div>
+          <h3 class="h3">{col.title}</h3>
+          <ul class="mt-4 divide-y divide-line" data-stagger>
+            {col.items.map((item) => (
+              <li class="py-5" data-reveal>
+                <h4 class="font-bold">{item.title}</h4>
+                <p class="mt-1 text-[0.9375rem] text-ink-2">{item.body}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+    <p class="mt-8 text-sm text-ink-3">{c.exchange.note}</p>
+  </Section>
+
+  <!-- How it works -->
+  <Section eyebrow={c.steps.eyebrow} title={c.steps.title} split class="border-t border-line">
+    <Rows items={c.steps.items} split />
+    <p class="mt-6 text-sm text-ink-3">{c.steps.note}</p>
+  </Section>
+
+  <!-- Application -->
+  <Section
+    id="candidatura"
+    eyebrow={c.form.eyebrow}
+    title={c.form.title}
+    lead={c.form.lead}
+    class="border-t border-line"
+  >
+    <PartnerForm locale={locale} />
+  </Section>
+
+  <!-- FAQ -->
+  <Section id="faq" eyebrow={c.faq.eyebrow} title={c.faq.title} split class="border-t border-line">
+    <Faq items={faqs} />
+  </Section>
+</Base>

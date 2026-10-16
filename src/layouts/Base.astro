@@ -1,0 +1,66 @@
+---
+import { Font } from 'astro:assets';
+import '../styles/global.css';
+import Seo from '../components/site/Seo.astro';
+import Header from '../components/site/Header.astro';
+import Footer from '../components/site/Footer.astro';
+import type { Locale, RouteId } from '../i18n/routes.ts';
+import { htmlLang, useTranslations } from '../i18n/ui.ts';
+// Inlined verbatim so it runs before first paint. Astro does not hash `is:inline`
+// scripts; astro.config.mjs adds this file's hash to the CSP, so edits to it are
+// picked up automatically. Its storage key and values must match theme.ts.
+import themeInit from '../scripts/theme-init.js?raw';
+
+interface Props {
+  locale: Locale;
+  title: string;
+  description: string;
+  route?: RouteId;
+  product?: 'company' | 'events' | 'beauty';
+  noindex?: boolean;
+  ogImage?: string;
+  ogImageAlt?: string;
+  jsonLd?: Record<string, unknown>[];
+}
+
+const { locale, product = 'company', ...seo } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<!doctype html>
+<html lang={htmlLang[locale]}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Sets an explicit theme before first paint; must stay the first script. -->
+    <script is:inline set:html={themeInit} />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F7F4EE" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#11152D" />
+    <Font cssVariable="--font-manrope" preload />
+    <Font cssVariable="--font-plex-mono" />
+    <Font cssVariable="--font-newsreader" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <Seo locale={locale} {...seo} />
+    <slot name="head" />
+  </head>
+  <body data-product={product} class="flex min-h-dvh flex-col">
+    <a
+      href="#conteudo"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-control focus:bg-accent-solid focus:px-4 focus:py-3 focus:font-semibold focus:text-on-accent"
+    >
+      {t('a11y.skip')}
+    </a>
+    <Header locale={locale} route={seo.route} />
+    <main id="conteudo" tabindex="-1" class="flex-1 outline-none">
+      <slot />
+    </main>
+    <Footer locale={locale} route={seo.route} />
+    <script>
+      import { initReveal } from '../scripts/reveal.ts';
+      initReveal();
+    </script>
+  </body>
+</html>

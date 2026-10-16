@@ -1,0 +1,26 @@
+---
+import { locales, routes, pathFor, type Locale, type RouteId } from '../../i18n/routes.ts';
+import { htmlLang, useTranslations } from '../../i18n/ui.ts';
+
+interface Props {
+  locale: Locale;
+  /** The current page; the switch keeps the visitor on the same page in the other language. */
+  route?: RouteId;
+}
+const { locale, route } = Astro.props;
+const other = locales.find((l) => l !== locale) ?? locale;
+const href = route ? routes[route].paths[other] : pathFor('home', other);
+const label = useTranslations(locale)('lang.switchTo');
+const short = other === 'en' ? 'EN' : 'PT';
+---
+
+<a
+  href={href}
+  hreflang={htmlLang[other]}
+  lang={htmlLang[other]}
+  class="inline-flex min-h-10 items-center rounded-full px-3 font-mono text-xs font-medium tracking-[0.12em] text-ink-2 no-underline hover:text-ink"
+  data-lang-switch
+>
+  <span aria-hidden="true">{short}</span>
+  <span class="sr-only">{label}</span>
+</a>

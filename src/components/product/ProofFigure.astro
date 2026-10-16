@@ -1,0 +1,52 @@
+---
+/**
+ * The origin proof: the real Do Luxo à Mesa event page with four numbered
+ * markers (docs/04 §7). Permission to show the system is founder-confirmed
+ * (docs/08 decision 5); the capture shows demonstration data (decision 0).
+ */
+import { Image } from 'astro:assets';
+import Chip from '../ui/Chip.astro';
+import proof from '../../assets/proof/do-luxo-a-mesa-evento.jpg';
+
+interface Props {
+  markers: { title: string; body: string }[];
+  caption: string;
+  chip: string;
+  alt: string;
+}
+const { markers, caption, chip, alt } = Astro.props;
+---
+
+<figure class="grid gap-8 lg:grid-cols-[1.45fr_1fr] lg:items-start lg:gap-12">
+  <div class="figure relative" data-reveal>
+    <Image
+      src={proof}
+      alt={alt}
+      widths={[640, 960, 1280, 1508]}
+      sizes="(min-width: 1024px) 60vw, 100vw"
+      class="block h-auto w-full"
+    />
+    {markers.map((_, i) => (
+      <span class={`marker marker-${i + 1}`} aria-hidden="true">
+        {i + 1}
+      </span>
+    ))}
+  </div>
+  <figcaption>
+    <Chip tone="original">{chip}</Chip>
+    <ol class="mt-6 flex flex-col gap-5" data-stagger>
+      {markers.map((m, i) => (
+        <li class="grid grid-cols-[2rem_1fr] gap-3" data-reveal>
+          <span class="marker marker-inline" aria-hidden="true">
+            {i + 1}
+          </span>
+          <div>
+            <h3 class="font-bold">{m.title}</h3>
+            <p class="mt-1 text-[0.9375rem] text-ink-2">{m.body}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+    <p class="mt-7 text-sm text-ink-3">{caption}</p>
+  </figcaption>
+</figure>

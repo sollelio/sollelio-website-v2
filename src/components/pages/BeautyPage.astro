@@ -1,0 +1,195 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Section from '../ui/Section.astro';
+import Button from '../ui/Button.astro';
+import Chip from '../ui/Chip.astro';
+import Faq from '../ui/Faq.astro';
+import ProductLockup from '../ui/ProductLockup.astro';
+import BeautyForm from '../product/BeautyForm.astro';
+import { beauty } from '../../content/pages/beauty.ts';
+import { pathFor, type Locale } from '../../i18n/routes.ts';
+import { useTranslations } from '../../i18n/ui.ts';
+import hoje from '../../assets/beauty/hoje.png';
+import stock from '../../assets/beauty/stock.png';
+import equipa from '../../assets/beauty/equipa.png';
+import salao from '../../assets/partners/salao-agradavel.png';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const c = beauty[locale];
+const t = useTranslations(locale);
+const screens = [hoje, stock, equipa];
+
+const faqs = (await getCollection('faq', (e) => e.data.product === 'beauty'))
+  .sort((a, b) => a.data.order - b.data.order)
+  .map((e) => ({ question: e.data.question[locale], answer: e.data.answer[locale] }));
+
+const site = 'https://sollelio.com';
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: 'Sollelio Beauty OS',
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'Web',
+    url: `${site}${pathFor('beauty', locale)}`,
+    description: c.meta.description,
+    publisher: { '@type': 'Organization', name: 'Sollelio', url: site },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.question,
+      acceptedAnswer: { '@type': 'Answer', text: f.answer },
+    })),
+  },
+];
+---
+
+<Base
+  locale={locale}
+  route="beauty"
+  product="beauty"
+  title={c.meta.title}
+  description={c.meta.description}
+  ogImage="/og/beauty-os.png"
+  ogImageAlt="Sollelio Beauty OS"
+  jsonLd={jsonLd}
+>
+  <!-- Hero -->
+  <section class="container pt-12 pb-14 md:pt-20 md:pb-20">
+    <div class="grid items-center gap-12 lg:grid-cols-[1.3fr_1fr] lg:gap-16">
+      <div>
+        <ProductLockup product="beauty" height={44} />
+        <div class="mt-8">
+          <Chip tone="v2">{c.hero.statusChip}</Chip>
+        </div>
+        <h1 class="display mt-6 max-w-[16ch]">{c.hero.title}</h1>
+        <p class="lead mt-7 max-w-[56ch]">{c.hero.lead}</p>
+        <div class="mt-9 flex flex-wrap gap-3">
+          <Button href="#contacto" arrow>
+            {t('cta.talk')}
+          </Button>
+          <Button href="#funciona" variant="secondary">
+            {c.hero.secondary}
+          </Button>
+        </div>
+        <p class="mt-6 max-w-[56ch] text-sm text-ink-3">{c.hero.note}</p>
+      </div>
+      <div class="figure mx-auto w-full max-w-[18rem] rounded-hero p-2 lg:max-w-[20rem]">
+        <Image
+          src={hoje}
+          alt={c.hero.screenAlt}
+          widths={[320, 640]}
+          sizes="(min-width: 1024px) 20rem, 18rem"
+          priority
+          class="block h-auto w-full rounded-[1.1rem]"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <Section
+    id="funciona"
+    eyebrow={c.how.eyebrow}
+    title={c.how.title}
+    lead={c.how.lead}
+    class="border-t border-line"
+  >
+    <ol class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3" data-stagger>
+      {c.how.items.map((item, i) => (
+        <li class="card p-6 md:p-7" data-reveal>
+          <span class="rows-n block" aria-hidden="true">
+            {String(i + 1).padStart(2, '0')}
+          </span>
+          <h3 class="h3 mt-3">{item.title}</h3>
+          <p class="mt-3 text-[0.9375rem] text-ink-2">{item.body}</p>
+        </li>
+      ))}
+    </ol>
+  </Section>
+
+  <!-- Real screens -->
+  <Section eyebrow={c.screens.eyebrow} title={c.screens.title} class="border-t border-line">
+    <ul class="grid gap-8 sm:grid-cols-3" data-stagger>
+      {c.screens.items.map((item, i) => (
+        <li data-reveal>
+          <figure>
+            <div class="figure rounded-hero p-2">
+              <Image
+                src={screens[i]!}
+                alt={item.alt}
+                widths={[320, 640]}
+                sizes="(min-width: 640px) 30vw, 90vw"
+                class="block h-auto w-full rounded-[1.1rem]"
+              />
+            </div>
+            <figcaption class="mono mt-4 text-ink-3">{item.label}</figcaption>
+          </figure>
+        </li>
+      ))}
+    </ul>
+    <p class="mt-8 text-sm text-ink-3">{c.screens.caption}</p>
+  </Section>
+
+  <!-- Invoicing boundary -->
+  <section class="section-tight border-t border-line">
+    <div class="container">
+      <div
+        class="panel grid gap-6 p-8 md:grid-cols-[minmax(0,22rem)_1fr] md:gap-16 md:p-12"
+        data-reveal
+      >
+        <div>
+          <p class="eyebrow">{c.boundary.eyebrow}</p>
+          <h2 class="h2 mt-4">{c.boundary.title}</h2>
+        </div>
+        <p class="lead self-center">{c.boundary.body}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- First salon -->
+  <section class="section border-t border-line">
+    <div class="container grid items-center gap-10 md:grid-cols-[1fr_minmax(0,22rem)] md:gap-16">
+      <div data-reveal>
+        <p class="eyebrow">{c.partner.eyebrow}</p>
+        <h2 class="h2 mt-4">{c.partner.title}</h2>
+        <p class="lead mt-5">{c.partner.body}</p>
+      </div>
+      <div class="card flex items-center justify-center bg-white p-8" data-reveal>
+        <Image
+          src={salao}
+          alt={c.partner.logoAlt}
+          widths={[320, 640]}
+          sizes="20rem"
+          class="h-auto w-full max-w-[16rem]"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- Availability and contact -->
+  <section id="contacto" class="section border-t border-line">
+    <div class="container grid gap-10 lg:grid-cols-[minmax(0,24rem)_1fr] lg:gap-16">
+      <div data-reveal>
+        <p class="eyebrow">{c.form.eyebrow}</p>
+        <h2 class="h2 mt-4">{c.availability.title}</h2>
+        <p class="lead mt-5">{c.availability.body}</p>
+        <p class="mt-6 text-sm text-ink-3">{c.form.lead}</p>
+      </div>
+      <BeautyForm locale={locale} />
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <Section id="faq" eyebrow={c.faq.eyebrow} title={c.faq.title} split class="border-t border-line">
+    <Faq items={faqs} />
+  </Section>
+</Base>

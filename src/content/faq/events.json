@@ -1,0 +1,132 @@
+[
+  {
+    "id": "programme-change",
+    "product": "programme",
+    "order": 10,
+    "question": {
+      "pt-PT": "Tenho de mudar a forma como trabalho?",
+      "en": "Do I have to change the way I work?"
+    },
+    "answer": {
+      "pt-PT": "Não. Começamos por perceber como trabalha hoje. O objetivo do programa é precisamente aprender com a sua operação real, não pedir-lhe que a altere. As conversas e os testes acontecem ao ritmo do seu negócio.",
+      "en": "No. We start by understanding how you work today. The whole point of the programme is to learn from your real operation, not to ask you to change it. Conversations and tests happen at your business’s pace."
+    }
+  },
+  {
+    "id": "programme-time",
+    "product": "programme",
+    "order": 20,
+    "question": {
+      "pt-PT": "Quanto tempo me vai pedir?",
+      "en": "How much of my time will it take?"
+    },
+    "answer": {
+      "pt-PT": "Cerca de uma a duas horas por mês, com flexibilidade, durante três meses prolongáveis por acordo mútuo. Inclui conversas de descoberta, revisão de protótipos e, quando existirem versões adequadas, testes curtos.",
+      "en": "About one to two hours a month, flexibly, over three months extendable by mutual agreement. That covers discovery conversations, prototype reviews and, when suitable versions exist, short tests."
+    }
+  },
+  {
+    "id": "programme-cost",
+    "product": "programme",
+    "order": 30,
+    "question": {
+      "pt-PT": "O programa tem custos?",
+      "en": "Does the programme cost anything?"
+    },
+    "answer": {
+      "pt-PT": "Não. A participação é gratuita durante os três meses iniciais e não há qualquer obrigação de compra. A Sollelio tenciona considerar condições preferenciais para os parceiros depois do programa, mas não garante preços, descontos, acesso gratuito permanente ou outros benefícios comerciais.",
+      "en": "No. Participation is free during the initial three months and there is no obligation to buy. Sollelio intends to consider preferential terms for partners after the programme, but does not guarantee prices, discounts, permanent free access or any other commercial benefit."
+    }
+  },
+  {
+    "id": "programme-availability",
+    "product": "programme",
+    "order": 40,
+    "question": {
+      "pt-PT": "Quando fica o Sollelio Events disponível?",
+      "en": "When will Sollelio Events be available?"
+    },
+    "answer": {
+      "pt-PT": "Ainda não há data. O Sollelio Events V2 está em fase de conceção e arquitetura, sem implementação funcional. Não anunciamos datas de lançamento, acessos ou um roteiro fixo de funcionalidades; os parceiros fundadores acompanham o produto à medida que ganha forma.",
+      "en": "There is no date yet. Sollelio Events V2 is in the conception and architecture phase, with no functional implementation. We do not announce launch dates, access or a fixed feature roadmap; founding partners follow the product as it takes shape."
+    }
+  },
+  {
+    "id": "programme-after",
+    "product": "programme",
+    "order": 50,
+    "question": {
+      "pt-PT": "O que acontece depois de me candidatar?",
+      "en": "What happens after I apply?"
+    },
+    "answer": {
+      "pt-PT": "Recebe uma resposta inicial no prazo de 5 dias úteis após a receção da candidatura. Se for convidado, combinamos uma conversa de 20 a 30 minutos. Depois dessa conversa, se houver encaixe, formalizamos o convite e confirmamos a participação.\n\nA candidatura não garante admissão: a seleção depende do encaixe com o produto e do potencial de colaboração.",
+      "en": "You receive an initial response within 5 business days of us receiving your application. If invited, we arrange a 20 to 30-minute conversation. After that conversation, if there is a fit, we formalise the invitation and confirm your participation.\n\nAn application does not guarantee admission: selection depends on product fit and the potential for collaboration."
+    }
+  },
+  {
+    "id": "programme-influence",
+    "product": "programme",
+    "order": 60,
+    "question": {
+      "pt-PT": "O meu feedback influencia mesmo o produto?",
+      "en": "Does my feedback really influence the product?"
+    },
+    "answer": {
+      "pt-PT": "Sim. As prioridades do Sollelio Events definem-se com os parceiros fundadores, a partir dos problemas reais que nos trazem. A decisão final de produto é da Sollelio, para que o resultado seja coerente para todas as empresas do setor. A participação não confere participação no capital nem direitos de decisão na empresa.",
+      "en": "Yes. Sollelio Events priorities are set with the founding partners, starting from the real problems they bring us. The final product decisions are Sollelio’s, so the result stays coherent for every business in the sector. Participation does not grant equity or corporate decision-making rights."
+    }
+  },
+  {
+    "id": "programme-leave",
+    "product": "programme",
+    "order": 70,
+    "question": {
+      "pt-PT": "Posso sair do programa?",
+      "en": "Can I leave the programme?"
+    },
+    "answer": {
+      "pt-PT": "Sim, a qualquer momento e sem penalização. Basta comunicar a decisão. O mesmo se aplica à Sollelio.",
+      "en": "Yes, at any time and without penalty. You only need to tell us. The same applies to Sollelio."
+    }
+  },
+  {
+    "id": "beauty-invoices",
+    "product": "beauty",
+    "order": 10,
+    "question": {
+      "pt-PT": "O Beauty OS emite faturas?",
+      "en": "Does Beauty OS issue invoices?"
+    },
+    "answer": {
+      "pt-PT": "Não. O Beauty OS regista operações e valores: serviços, pagamentos, adiantamentos, despesas e fecho do período. Não emite faturas nem documentos para o cliente e não substitui o seu software de faturação certificado.",
+      "en": "No. Beauty OS records operations and amounts: services, payments, advances, expenses and the period close. It does not issue invoices or customer-facing documents, and it does not replace your certified invoicing software."
+    }
+  },
+  {
+    "id": "beauty-availability",
+    "product": "beauty",
+    "order": 20,
+    "question": {
+      "pt-PT": "Está disponível para o meu salão?",
+      "en": "Is it available for my salon?"
+    },
+    "answer": {
+      "pt-PT": "Ainda não está disponível comercialmente. Está em adoção inicial com o Salão Agradável, o primeiro salão parceiro. Se quiser perceber se faz sentido para o seu salão, fale connosco; respondemos pessoalmente.",
+      "en": "Not yet. It is in early adoption with Salão Agradável, the first partner salon. If you want to find out whether it makes sense for your salon, talk to us; we reply personally."
+    }
+  },
+  {
+    "id": "beauty-price",
+    "product": "beauty",
+    "order": 30,
+    "question": {
+      "pt-PT": "Quanto custa?",
+      "en": "How much does it cost?"
+    },
+    "answer": {
+      "pt-PT": "Não há preços publicados, nem subscrições ou períodos de experiência. As condições comerciais serão definidas antes de o produto ficar disponível.",
+      "en": "There are no published prices, subscriptions or trial periods. Commercial terms will be defined before the product becomes available."
+    }
+  }
+]

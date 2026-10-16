@@ -1,0 +1,168 @@
+/*
+ * Sollelio design tokens.
+ * Source: "Fundações do sistema visual" board on the design canvas and docs/04 §5.
+ * Values here must match the board exactly; `npm run check:contrast` verifies
+ * the text pairs and that the two dark blocks below are identical.
+ *
+ * Theme model: no attribute = follow the system; data-theme="light" or "dark"
+ * = explicit choice set by the inline script in <head> before first paint.
+ */
+
+/* @tokens light */
+:root {
+  color-scheme: light;
+
+  /* Surfaces */
+  --bg: #f7f4ee; /* Warm Off-white (brand) */
+  --bg-2: #fbfaf7; /* Cards, panels */
+  --bg-3: #efebe2; /* Muted surfaces */
+  --line: #e6e1d6; /* Hairlines, borders */
+
+  /* Text */
+  --ink: #25272b; /* Warm Graphite (brand) */
+  --ink-2: #5a5d64; /* Secondary text */
+  --ink-3: #6b6e77; /* Captions */
+
+  /* Brand marks (symbol planes, chips, squares). Never used for body text. */
+  --mark-company: #2457f5; /* Cobalt */
+  --mark-events: #00a69a; /* Events teal */
+  --mark-beauty: #7657d6; /* Beauty OS violet */
+
+  /* Product accents for text and solid buttons */
+  --company: #3030a8; /* Mineral Indigo */
+  --company-solid: #3030a8;
+  --on-company: #ffffff;
+  --events: #007d74; /* Teal-ink */
+  --events-solid: #007d74;
+  --on-events: #ffffff;
+  --beauty: #5b3fb8; /* Violet-ink */
+  --beauty-solid: #5b3fb8;
+  --on-beauty: #ffffff;
+
+  --link: #3030a8;
+  --link-hover: #2457f5;
+  --focus: #2457f5;
+
+  /* Status tiers (docs/02 §3) */
+  --tier-original-bg: #dff4f1;
+  --tier-original-ink: #005e57;
+  --tier-v2-bg: #e3f3ea;
+  --tier-v2-ink: #1f6b45;
+  --tier-dev-bg: #fff1d6;
+  --tier-dev-ink: #7a4b00;
+  --tier-explore-bg: #ecebf2;
+  --tier-explore-ink: #4a4c57;
+
+  --shadow-figure: 0 30px 60px -30px rgb(17 21 45 / 0.28);
+  --theme-color: #f7f4ee;
+}
+
+/* @tokens dark (explicit choice) */
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --bg: #11152d; /* Midnight Indigo (brand) */
+  --bg-2: #171c3b; /* Raised surface */
+  --bg-3: #1a2046; /* Surface 2 */
+  --line: rgb(245 244 251 / 0.14);
+
+  --ink: #f5f4fb;
+  --ink-2: #c6c8e6;
+  --ink-3: #9fa2c4;
+
+  --mark-company: #2457f5;
+  --mark-events: #00a69a;
+  --mark-beauty: #9a7cf0;
+
+  --company: #9db8ff;
+  --company-solid: #ffffff; /* White primary button on dark */
+  --on-company: #11152d;
+  --events: #5fd3c9;
+  --events-solid: #5fd3c9;
+  --on-events: #11152d;
+  --beauty: #9a7cf0;
+  --beauty-solid: #9a7cf0;
+  --on-beauty: #11152d;
+
+  --link: #9db8ff;
+  --link-hover: #c4d4ff;
+  --focus: #8ec8ff;
+
+  --tier-original-bg: rgb(95 211 201 / 0.14);
+  --tier-original-ink: #8fe3db;
+  --tier-v2-bg: rgb(154 223 181 / 0.14);
+  --tier-v2-ink: #9adfb5;
+  --tier-dev-bg: rgb(242 192 99 / 0.14);
+  --tier-dev-ink: #f2c063;
+  --tier-explore-bg: rgb(198 200 230 / 0.12);
+  --tier-explore-ink: #c6c8e6;
+
+  --shadow-figure: 0 30px 60px -30px rgb(0 0 0 / 0.6);
+  --theme-color: #11152d;
+}
+
+/* @tokens dark (system preference). Keep identical to the block above. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+
+    --bg: #11152d; /* Midnight Indigo (brand) */
+    --bg-2: #171c3b; /* Raised surface */
+    --bg-3: #1a2046; /* Surface 2 */
+    --line: rgb(245 244 251 / 0.14);
+
+    --ink: #f5f4fb;
+    --ink-2: #c6c8e6;
+    --ink-3: #9fa2c4;
+
+    --mark-company: #2457f5;
+    --mark-events: #00a69a;
+    --mark-beauty: #9a7cf0;
+
+    --company: #9db8ff;
+    --company-solid: #ffffff; /* White primary button on dark */
+    --on-company: #11152d;
+    --events: #5fd3c9;
+    --events-solid: #5fd3c9;
+    --on-events: #11152d;
+    --beauty: #9a7cf0;
+    --beauty-solid: #9a7cf0;
+    --on-beauty: #11152d;
+
+    --link: #9db8ff;
+    --link-hover: #c4d4ff;
+    --focus: #8ec8ff;
+
+    --tier-original-bg: rgb(95 211 201 / 0.14);
+    --tier-original-ink: #8fe3db;
+    --tier-v2-bg: rgb(154 223 181 / 0.14);
+    --tier-v2-ink: #9adfb5;
+    --tier-dev-bg: rgb(242 192 99 / 0.14);
+    --tier-dev-ink: #f2c063;
+    --tier-explore-bg: rgb(198 200 230 / 0.12);
+    --tier-explore-ink: #c6c8e6;
+
+    --shadow-figure: 0 30px 60px -30px rgb(0 0 0 / 0.6);
+    --theme-color: #11152d;
+  }
+}
+
+/* Accent by context: <body data-product="company|events|beauty"> */
+[data-product='company'] {
+  --accent: var(--company);
+  --accent-solid: var(--company-solid);
+  --on-accent: var(--on-company);
+  --accent-mark: var(--mark-company);
+}
+[data-product='events'] {
+  --accent: var(--events);
+  --accent-solid: var(--events-solid);
+  --on-accent: var(--on-events);
+  --accent-mark: var(--mark-events);
+}
+[data-product='beauty'] {
+  --accent: var(--beauty);
+  --accent-solid: var(--beauty-solid);
+  --on-accent: var(--on-beauty);
+  --accent-mark: var(--mark-beauty);
+}

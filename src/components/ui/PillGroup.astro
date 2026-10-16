@@ -1,0 +1,43 @@
+---
+/** Multi-select pills (checkboxes) in a fieldset; optional "at least one" rule. */
+interface Option {
+  value: string;
+  label: string;
+}
+interface Props {
+  name: string;
+  legend: string;
+  options: Option[];
+  required?: boolean;
+  hint?: string;
+  optionalLabel?: string;
+}
+const { name, legend, options, required = false, hint, optionalLabel } = Astro.props;
+const id = `g-${name}`;
+const describedBy = [hint && `${id}-hint`, `${id}-error`].filter(Boolean).join(' ');
+---
+
+<fieldset
+  class="field min-w-0 border-0 p-0"
+  aria-describedby={describedBy}
+  data-group-required={required ? '' : undefined}
+>
+  <legend class="field-label">
+    {legend}
+    {!required && optionalLabel && <span class="field-optional"> ({optionalLabel})</span>}
+  </legend>
+  {hint && (
+    <p id={`${id}-hint`} class="field-hint">
+      {hint}
+    </p>
+  )}
+  <div class="flex flex-wrap gap-2">
+    {options.map((o) => (
+      <label class="pill">
+        <input type="checkbox" name={name} value={o.value} class="sr-only" />
+        <span>{o.label}</span>
+      </label>
+    ))}
+  </div>
+  <p id={`${id}-error`} class="field-error" aria-live="polite"></p>
+</fieldset>

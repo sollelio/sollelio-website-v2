@@ -1,0 +1,87 @@
+---
+import { useTranslations } from '../../i18n/ui.ts';
+import type { Locale } from '../../i18n/routes.ts';
+
+interface Props {
+  locale: Locale;
+  /** `compact` shows icons only (header on small screens); labels stay available to assistive tech. */
+  compact?: boolean;
+}
+const { locale, compact = false } = Astro.props;
+const t = useTranslations(locale);
+const options = [
+  { value: 'system', label: t('theme.system') },
+  { value: 'light', label: t('theme.light') },
+  { value: 'dark', label: t('theme.dark') },
+] as const;
+---
+
+<div
+  role="group"
+  aria-label={t('theme.label')}
+  class="theme-toggle inline-flex rounded-full border border-line bg-bg-2 p-1"
+  data-theme-toggle
+>
+  {options.map((o) => (
+    <button
+      type="button"
+      data-theme-value={o.value}
+      aria-pressed={o.value === 'system' ? 'true' : 'false'}
+      class:list={[
+        'inline-flex min-h-10 min-w-10 items-center justify-center gap-2 rounded-full text-sm font-semibold text-ink-2',
+        'hover:text-ink aria-pressed:bg-bg-3 aria-pressed:text-ink',
+        compact ? 'px-2' : 'px-3',
+      ]}
+      aria-label={compact ? o.label : undefined}
+      title={compact ? o.label : undefined}
+    >
+      {o.value === 'system' && (
+        <svg
+          viewBox="0 0 20 20"
+          width="18"
+          height="18"
+          aria-hidden="true"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.6"
+        >
+          <rect x="2.5" y="3.5" width="15" height="10" rx="1.5" />
+          <path d="M7 17h6M10 13.5V17" />
+        </svg>
+      )}
+      {o.value === 'light' && (
+        <svg
+          viewBox="0 0 20 20"
+          width="18"
+          height="18"
+          aria-hidden="true"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.6"
+        >
+          <circle cx="10" cy="10" r="3.5" />
+          <path d="M10 1.5v2M10 16.5v2M1.5 10h2M16.5 10h2M4 4l1.4 1.4M14.6 14.6 16 16M4 16l1.4-1.4M14.6 5.4 16 4" />
+        </svg>
+      )}
+      {o.value === 'dark' && (
+        <svg
+          viewBox="0 0 20 20"
+          width="18"
+          height="18"
+          aria-hidden="true"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.6"
+        >
+          <path d="M16.5 12.5A7 7 0 0 1 7.5 3.5a7 7 0 1 0 9 9Z" />
+        </svg>
+      )}
+      {!compact && <span>{o.label}</span>}
+    </button>
+  ))}
+</div>
+
+<script>
+  import { initThemeToggles } from '../../scripts/theme.ts';
+  initThemeToggles();
+</script>

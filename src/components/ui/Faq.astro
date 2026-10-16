@@ -1,0 +1,39 @@
+---
+/** FAQ list built on native <details>; works without JavaScript. */
+interface Item {
+  question: string;
+  answer: string;
+}
+interface Props {
+  items: Item[];
+  class?: string;
+}
+const { items, class: cls } = Astro.props;
+---
+
+<div class:list={[cls]}>
+  {items.map((item) => (
+    <details class="faq-item">
+      <summary>
+        <span>{item.question}</span>
+        <svg
+          class="faq-icon"
+          viewBox="0 0 20 20"
+          width="20"
+          height="20"
+          aria-hidden="true"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.8"
+        >
+          <path d="M10 4v12M4 10h12" />
+        </svg>
+      </summary>
+      <div class="faq-body prose-site">
+        {item.answer.split('\n\n').map((paragraph) => (
+          <p>{paragraph}</p>
+        ))}
+      </div>
+    </details>
+  ))}
+</div>

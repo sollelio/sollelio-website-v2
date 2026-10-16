@@ -1,0 +1,69 @@
+---
+import { routes, locales, defaultLocale, type Locale, type RouteId } from '../../i18n/routes.ts';
+import { htmlLang, ogLocale } from '../../i18n/ui.ts';
+
+interface Props {
+  title: string;
+  description: string;
+  locale: Locale;
+  /** Page id from the route map; omit for pages without alternates (404). */
+  route?: RouteId;
+  noindex?: boolean;
+  ogImage?: string;
+  ogImageAlt?: string;
+  /** Truthful structured data only (docs/05 §10.1): no offers, ratings or invented facts. */
+  jsonLd?: Record<string, unknown>[];
+}
+
+const {
+  title,
+  description,
+  locale,
+  route,
+  noindex = false,
+  ogImage = '/og/sollelio.png',
+  ogImageAlt = 'Sollelio',
+  jsonLd = [],
+} = Astro.props;
+const site = Astro.site ?? new URL('https://sollelio.com');
+const canonical = route ? new URL(routes[route].paths[locale], site).href : undefined;
+const alternates = route
+  ? locales.map((l) => ({
+      hreflang: htmlLang[l],
+      href: new URL(routes[route].paths[l], site).href,
+    }))
+  : [];
+const xDefault = route ? new URL(routes[route].paths[defaultLocale], site).href : undefined;
+const robots =
+  noindex || (route ? !routes[route].indexable : true) ? 'noindex, follow' : 'index, follow';
+const image = new URL(ogImage, site).href;
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<meta name="robots" content={robots} />
+{canonical && <link rel="canonical" href={canonical} />}
+{alternates.map((a) => (
+  <link rel="alternate" hreflang={a.hreflang} href={a.href} />
+))}
+{xDefault && <link rel="alternate" hreflang="x-default" href={xDefault} />}
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Sollelio" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:locale" content={ogLocale[locale]} />
+{locales
+  .filter((l) => l !== locale)
+  .map((l) => (
+    <meta property="og:locale:alternate" content={ogLocale[l]} />
+  ))}
+{canonical && <meta property="og:url" content={canonical} />}
+<meta property="og:image" content={image} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content={ogImageAlt} />
+<meta name="twitter:card" content="summary_large_image" />
+{jsonLd.map((data) => (
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(data)} />
+))}

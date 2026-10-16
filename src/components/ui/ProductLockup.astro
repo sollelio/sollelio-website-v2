@@ -1,0 +1,40 @@
+---
+/**
+ * Product lockups (approved outlined SVGs). The reverse files for dark
+ * surfaces are derived from the approved reverse lockups with only the
+ * background rectangle removed; they are pending founder approval.
+ */
+interface Props {
+  product: 'events' | 'beauty';
+  /** Rendered height in px; width follows the file's aspect ratio. */
+  height?: number;
+  class?: string;
+}
+const { product, height = 44, class: cls } = Astro.props;
+const files = {
+  events: {
+    light: '/brand/sollelio-events-logo.svg',
+    dark: '/brand/sollelio-events-logo-reverse.derived.svg',
+    ratio: 430 / 120,
+    alt: 'Sollelio Events',
+  },
+  beauty: {
+    light: '/brand/sollelio-beauty-os-logo.svg',
+    dark: '/brand/sollelio-beauty-os-logo-reverse.derived.svg',
+    ratio: 520 / 120,
+    alt: 'Sollelio Beauty OS',
+  },
+}[product];
+const width = Math.round(height * files.ratio);
+---
+
+<span class:list={['inline-block', cls]}>
+  <img src={files.light} alt={files.alt} width={width} height={height} class="h-auto dark:hidden" />
+  <img
+    src={files.dark}
+    alt={files.alt}
+    width={width}
+    height={height}
+    class="hidden h-auto dark:block"
+  />
+</span>

@@ -1,0 +1,116 @@
+---
+import Logo from './Logo.astro';
+import LangSwitch from './LangSwitch.astro';
+import ThemeToggle from './ThemeToggle.astro';
+import { pathFor, type Locale, type RouteId } from '../../i18n/routes.ts';
+import { useTranslations } from '../../i18n/ui.ts';
+
+interface Props {
+  locale: Locale;
+  route?: RouteId;
+}
+const { locale, route } = Astro.props;
+const t = useTranslations(locale);
+
+const nav: { id: RouteId; label: string }[] = [
+  { id: 'events', label: t('nav.events') },
+  { id: 'beauty', label: t('nav.beauty') },
+  { id: 'partners', label: t('nav.partners') },
+];
+
+// One compact action while the programme is open (docs/03 §2); on the
+// programme page it scrolls to the form, on Beauty OS it is the product's own.
+const cta =
+  route === 'partners'
+    ? { href: '#candidatura', label: t('cta.toForm') }
+    : route === 'beauty'
+      ? { href: '#contacto', label: t('cta.talk') }
+      : { href: pathFor('partners', locale), label: t('cta.apply') };
+
+const isCurrent = (id: RouteId) =>
+  id === route || (id === 'events' && route === 'partnersThanks') ? 'page' : undefined;
+---
+
+<header class="site-header">
+  <div class="container relative flex h-18 items-center gap-3">
+    <Logo href={pathFor('home', locale)} label={`${t('site.name')} — ${t('nav.home')}`} />
+
+    <nav aria-label={t('nav.label')} class="ml-6 hidden md:block">
+      <ul class="flex items-center gap-1">
+        {nav.map((item) => (
+          <li>
+            <a href={pathFor(item.id, locale)} aria-current={isCurrent(item.id)} class="nav-link">
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="ml-auto flex items-center gap-2">
+      <div class="hidden items-center gap-1 md:flex">
+        <LangSwitch locale={locale} route={route} />
+        <ThemeToggle locale={locale} compact />
+      </div>
+      <a
+        href={cta.href}
+        class="btn btn-primary hidden min-h-10 px-4 text-[0.9375rem] sm:inline-flex"
+      >
+        {cta.label}
+      </a>
+
+      <details class="menu md:hidden">
+        <summary aria-label={t('nav.menu')}>
+          <svg
+            class="icon-open"
+            viewBox="0 0 20 20"
+            width="20"
+            height="20"
+            aria-hidden="true"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+          >
+            <path d="M3 6h14M3 10h14M3 14h14" />
+          </svg>
+          <svg
+            class="icon-close"
+            viewBox="0 0 20 20"
+            width="20"
+            height="20"
+            aria-hidden="true"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+          >
+            <path d="M5 5l10 10M15 5L5 15" />
+          </svg>
+        </summary>
+        <div class="menu-panel">
+          <nav aria-label={t('nav.label')} class="container py-4">
+            <ul class="flex flex-col">
+              {nav.map((item) => (
+                <li>
+                  <a
+                    href={pathFor(item.id, locale)}
+                    aria-current={isCurrent(item.id)}
+                    class="flex min-h-12 items-center border-b border-line text-lg font-bold text-ink no-underline"
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <a href={cta.href} class="btn btn-primary mt-5 w-full">
+              {cta.label}
+            </a>
+            <div class="mt-5 flex flex-wrap items-center justify-between gap-3">
+              <LangSwitch locale={locale} route={route} />
+              <ThemeToggle locale={locale} />
+            </div>
+          </nav>
+        </div>
+      </details>
+    </div>
+  </div>
+</header>

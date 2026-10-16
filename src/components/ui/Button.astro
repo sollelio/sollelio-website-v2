@@ -1,0 +1,61 @@
+---
+/**
+ * One button, three weights (docs/04 §7): primary follows the page accent,
+ * secondary is outlined, link is a text action. Renders an <a> when `href`
+ * is given, otherwise a <button>.
+ */
+interface Props {
+  href?: string;
+  variant?: 'primary' | 'secondary' | 'link';
+  type?: 'button' | 'submit';
+  arrow?: boolean;
+  class?: string;
+  id?: string;
+  'data-track'?: string;
+}
+const {
+  href,
+  variant = 'primary',
+  type = 'button',
+  arrow = false,
+  class: cls,
+  ...rest
+} = Astro.props;
+const classes = ['btn', `btn-${variant}`, cls];
+---
+
+{href ? (
+  <a href={href} class:list={classes} {...rest}>
+    <slot />
+    {arrow && (
+      <svg
+        viewBox="0 0 20 20"
+        width="18"
+        height="18"
+        aria-hidden="true"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+      >
+        <path d="M4 10h11M11 5l5 5-5 5" />
+      </svg>
+    )}
+  </a>
+) : (
+  <button type={type} class:list={classes} {...rest}>
+    <slot />
+    {arrow && (
+      <svg
+        viewBox="0 0 20 20"
+        width="18"
+        height="18"
+        aria-hidden="true"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+      >
+        <path d="M4 10h11M11 5l5 5-5 5" />
+      </svg>
+    )}
+  </button>
+)}

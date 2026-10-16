@@ -1,0 +1,52 @@
+---
+/**
+ * Sollelio lockup in the header and footer. Brand rule (docs/04 §4): the
+ * lockup is used at ≥ 140 px width; below that only the symbol. On small
+ * screens the header therefore shows the 40 px symbol.
+ * Light and reverse files swap with the theme; both are tiny SVGs.
+ */
+interface Props {
+  href: string;
+  label: string;
+  /** `responsive`: symbol on mobile, lockup from md up. `lockup`: always lockup. */
+  variant?: 'responsive' | 'lockup';
+}
+const { href, label, variant = 'responsive' } = Astro.props;
+const lockup = variant === 'lockup' ? 'block' : 'hidden md:block';
+const symbol = variant === 'lockup' ? 'hidden' : 'block md:hidden';
+---
+
+<a href={href} class="inline-flex shrink-0 items-center rounded-control" aria-label={label}>
+  <span class:list={[lockup]}>
+    <img
+      src="/brand/sollelio-logo.svg"
+      alt=""
+      width="150"
+      height="39"
+      class="h-auto w-[150px] dark:hidden"
+    />
+    <img
+      src="/brand/sollelio-logo-reverse.derived.svg"
+      alt=""
+      width="150"
+      height="39"
+      class="hidden h-auto w-[150px] dark:block"
+    />
+  </span>
+  <span class:list={[symbol]}>
+    <img
+      src="/brand/sollelio-symbol.svg"
+      alt=""
+      width="40"
+      height="40"
+      class="size-10 dark:hidden"
+    />
+    <img
+      src="/brand/sollelio-symbol-reverse.derived.svg"
+      alt=""
+      width="40"
+      height="40"
+      class="hidden size-10 dark:block"
+    />
+  </span>
+</a>

@@ -1,0 +1,60 @@
+[
+  {
+    "id": "original-journey",
+    "product": "events",
+    "tier": "original",
+    "order": 10,
+    "label": { "pt-PT": "A jornada do evento por fases", "en": "The event journey by stage" },
+    "evidence": {
+      "kind": "authorised-screenshot",
+      "reference": "src/assets/proof/do-luxo-a-mesa-evento.jpg",
+      "date": "2026-10-16"
+    }
+  },
+  {
+    "id": "original-next-step",
+    "product": "events",
+    "tier": "original",
+    "order": 20,
+    "label": { "pt-PT": "O próximo passo, à vista", "en": "The next step, in view" },
+    "evidence": {
+      "kind": "authorised-screenshot",
+      "reference": "src/assets/proof/do-luxo-a-mesa-evento.jpg",
+      "date": "2026-10-16"
+    }
+  },
+  {
+    "id": "original-one-place",
+    "product": "events",
+    "tier": "original",
+    "order": 30,
+    "label": { "pt-PT": "O evento todo num sítio", "en": "The whole event in one place" },
+    "evidence": {
+      "kind": "authorised-screenshot",
+      "reference": "src/assets/proof/do-luxo-a-mesa-evento.jpg",
+      "date": "2026-10-16"
+    }
+  },
+  {
+    "id": "original-documents",
+    "product": "events",
+    "tier": "original",
+    "order": 40,
+    "label": { "pt-PT": "Orçamento, contrato e briefing", "en": "Quote, contract and briefing" },
+    "evidence": {
+      "kind": "authorised-screenshot",
+      "reference": "src/assets/proof/do-luxo-a-mesa-evento.jpg",
+      "date": "2026-10-16"
+    }
+  },
+  {
+    "id": "v2-conception",
+    "product": "events",
+    "tier": "exploring",
+    "order": 100,
+    "label": {
+      "pt-PT": "Sollelio Events V2: em conceção e arquitetura, sem implementação funcional",
+      "en": "Sollelio Events V2: in conception and architecture, no functional implementation"
+    }
+  }
+]

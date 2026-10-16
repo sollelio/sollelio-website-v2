@@ -1,0 +1,40 @@
+---
+/**
+ * A page section with the editorial header pattern: eyebrow, H2, lead.
+ * The header is limited to a comfortable measure; the body is the slot.
+ */
+interface Props {
+  id?: string;
+  eyebrow?: string;
+  title?: string;
+  lead?: string;
+  class?: string;
+  tight?: boolean;
+  /** Header and body side by side from md up (header left, body right). */
+  split?: boolean;
+}
+const { id, eyebrow, title, lead, class: cls, tight = false, split = false } = Astro.props;
+const hasHeader = Boolean(eyebrow || title || lead);
+---
+
+<section id={id} class:list={[tight ? 'section-tight' : 'section', cls]}>
+  <div
+    class:list={[
+      'container',
+      split &&
+        hasHeader &&
+        'md:grid md:grid-cols-[minmax(0,22rem)_1fr] md:gap-x-16 lg:grid-cols-[minmax(0,26rem)_1fr]',
+    ]}
+  >
+    {hasHeader && (
+      <header class:list={['max-w-[44rem]', !split && 'mb-10 md:mb-14']} data-reveal>
+        {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+        {title && <h2 class="h2 mt-4">{title}</h2>}
+        {lead && <p class="lead mt-5">{lead}</p>}
+      </header>
+    )}
+    <div class:list={[split && hasHeader && 'mt-10 md:mt-0']}>
+      <slot />
+    </div>
+  </div>
+</section>

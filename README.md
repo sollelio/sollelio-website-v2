@@ -118,7 +118,8 @@ JavaScript it posts natively and Netlify redirects to the form's `action`. On Ne
 form detection for the site and set the notification inbox in the UI; nothing else is needed.
 Accepting real submissions is still gated by the privacy page (docs/08, decision 6). `demo` mode
 keeps the same journey but sends nothing. Attribution fields (`utm_*`, referrer, landing page,
-language) are filled client-side and contain no personal data.
+language) are filled client-side and normally contain no personal data; the privacy policy covers
+the case where a referrer or campaign tag does.
 
 ## Common edits
 

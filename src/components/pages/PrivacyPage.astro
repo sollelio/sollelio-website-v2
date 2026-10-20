@@ -21,12 +21,15 @@ const c = privacy[locale];
     <div class="max-w-[72ch]">
       <p class="eyebrow">{c.eyebrow}</p>
       <h1 class="display mt-6">{c.title}</h1>
-      <p
-        class="mt-8 rounded-card border border-line bg-bg-3 px-5 py-4 text-[0.9375rem] font-semibold"
-        role="note"
-      >
-        {c.notice}
-      </p>
+      <p class="lead mt-7">{c.lead}</p>
+      {c.notice && (
+        <p
+          class="mt-8 rounded-card border border-line bg-bg-3 px-5 py-4 text-[0.9375rem] font-semibold"
+          role="note"
+        >
+          {c.notice}
+        </p>
+      )}
       <div class="mt-12 flex flex-col gap-10">
         {c.sections.map((section) => (
           <section>

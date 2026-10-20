@@ -252,7 +252,7 @@ export const partners: Record<Locale, PartnersCopy> = {
         consentLink: 'Ler o aviso de privacidade',
       },
       privacy:
-        'Os seus dados servem apenas para responder à sua candidatura e preparar a conversa. Não os partilhamos nem os usamos para marketing. Pode pedir-nos para os apagar quando quiser.',
+        'Ao enviar, os seus dados são tratados por Hélio Gonçalves (Sollelio) para analisar a candidatura e contactá-lo, como passo prévio a uma eventual colaboração. Não os usamos para marketing. Guardamo-los até 6 meses após o fecho da seleção, ou durante a colaboração se for selecionado. Pode pedir acesso, correção ou apagamento em sollelio.it@gmail.com.',
       submit: 'Enviar candidatura',
       emailAlt: 'Prefere email?',
     },
@@ -432,7 +432,7 @@ export const partners: Record<Locale, PartnersCopy> = {
         consentLink: 'Read the privacy notice',
       },
       privacy:
-        'Your details are used only to answer your application and prepare the conversation. We do not share them or use them for marketing. You can ask us to delete them at any time.',
+        'When you send this form, your details are processed by Hélio Gonçalves (Sollelio) to assess the application and contact you, as a step prior to a possible collaboration. We do not use them for marketing. We keep them for up to 6 months after the selection closes, or for the duration of the collaboration if you are selected. You can ask for access, correction or deletion at sollelio.it@gmail.com.',
       submit: 'Send application',
       emailAlt: 'Prefer email?',
     },

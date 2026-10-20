@@ -141,7 +141,9 @@ const optional = t('form.optional');
     </div>
   </div>
 
-  <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
+  <p class="mt-8 max-w-[70ch] text-sm text-ink-3">{c.privacy}</p>
+
+  <div class="mt-6 flex flex-wrap items-center gap-x-6 gap-y-4">
     <Button type="submit" arrow>
       {c.submit}
     </Button>
@@ -149,7 +151,6 @@ const optional = t('form.optional');
       {c.emailAlt} <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
     </p>
   </div>
-  <p class="mt-6 max-w-[70ch] text-sm text-ink-3">{c.privacy}</p>
   <p
     data-form-failure
     hidden

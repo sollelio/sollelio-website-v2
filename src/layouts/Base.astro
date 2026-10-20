@@ -59,7 +59,9 @@ const t = useTranslations(locale);
     </main>
     <Footer locale={locale} route={seo.route} />
     <script>
+      import { captureAttribution } from '../scripts/attribution.ts';
       import { initReveal } from '../scripts/reveal.ts';
+      captureAttribution();
       initReveal();
     </script>
   </body>

@@ -77,7 +77,7 @@ export const privacy: Record<Locale, PrivacyCopy> = {
       {
         title: 'Dados técnicos, segurança e proteção contra spam',
         paragraphs: [
-          'Com cada formulário são enviados, sem intervenção sua, a língua da página, a página onde o preencheu, o domínio do site de onde veio (se existir) e eventuais etiquetas de campanha do endereço (utm). Servem apenas para percebermos de onde chegam as candidaturas. Em regra não contêm dados pessoais; se o endereço de origem ou as etiquetas de campanha incluírem informação sobre si, tratamo-la com a mesma finalidade e pelos mesmos prazos da submissão.',
+          'Com cada formulário são enviados, sem intervenção sua, a língua da página e o contexto com que entrou no website nesta visita: a página por onde entrou, o domínio do site de onde veio (se existir) e eventuais etiquetas de campanha do endereço (utm_source, utm_medium e utm_campaign). Estes elementos ficam no armazenamento de sessão do seu navegador enquanto o separador estiver aberto, para não se perderem quando navega entre páginas antes de preencher o formulário; não são enviados a ninguém até submeter um formulário e desaparecem quando fecha o separador. Servem apenas para percebermos de onde chegam as candidaturas. Em regra não contêm dados pessoais: guardamos só o domínio do site de origem, não o endereço completo, e ignoramos etiquetas que pareçam conter um email ou um endereço de internet. Se, mesmo assim, incluírem informação sobre si, tratamo-la com a mesma finalidade e pelos mesmos prazos da submissão.',
           'Cada formulário tem um campo oculto de deteção de robôs e todas as submissões passam pelo filtro de spam Akismet, operado pela Automattic, Inc. para a Netlify. Fundamento jurídico: o nosso interesse legítimo em manter o website seguro e os formulários utilizáveis (artigo 6.º, n.º 1, alínea f)).',
           'Para entregar e proteger o website, a Netlify trata dados técnicos de ligação, como o endereço IP e os registos de pedidos, de acordo com a sua declaração de privacidade. Não consultamos esses registos nem os usamos para o identificar.',
         ],
@@ -132,7 +132,7 @@ export const privacy: Record<Locale, PrivacyCopy> = {
         title: 'Cookies e armazenamento no navegador',
         paragraphs: [
           'Este website não usa cookies, nem de publicidade, nem de medição de audiência, nem de qualquer outro tipo, e não inclui ferramentas de análise de tráfego. As fontes e todos os recursos são servidos a partir do próprio website.',
-          'A sua preferência de tema (claro ou escuro) fica guardada apenas no armazenamento local do seu navegador, nunca nos é enviada e pode ser apagada a qualquer momento nas definições do navegador.',
+          'A sua preferência de tema (claro ou escuro) fica guardada apenas no armazenamento local do seu navegador, nunca nos é enviada e pode ser apagada a qualquer momento nas definições do navegador. O contexto de entrada descrito acima (página de entrada, domínio de origem e etiquetas de campanha) fica no armazenamento de sessão do navegador apenas durante a visita e só nos chega se submeter um formulário.',
         ],
       },
       {
@@ -199,7 +199,7 @@ export const privacy: Record<Locale, PrivacyCopy> = {
       {
         title: 'Technical data, security and spam protection',
         paragraphs: [
-          'Each form also sends, without any action on your part, the page language, the page where you filled it in, the domain of the site you came from (if any) and any campaign tags in the address (utm). They serve only to tell us where applications come from. As a rule they contain no personal data; if the referring address or the campaign tags include information about you, we handle it for the same purpose and for the same periods as the submission.',
+          'Each form also sends, without any action on your part, the page language and the context in which you entered the website on this visit: the page you arrived on, the domain of the site you came from (if any) and any campaign tags in the address (utm_source, utm_medium and utm_campaign). These are kept in your browser’s session storage while the tab is open, so they are not lost when you move between pages before filling in the form; they are sent to no one until you submit a form and disappear when you close the tab. They serve only to tell us where applications come from. As a rule they contain no personal data: we keep only the domain of the referring site, not the full address, and ignore tags that look like an email or a web address. If they nonetheless include information about you, we handle it for the same purpose and for the same periods as the submission.',
           'Each form has a hidden bot-detection field, and every submission goes through the Akismet spam filter, operated by Automattic, Inc. for Netlify. Legal basis: our legitimate interest in keeping the website secure and the forms usable (Article 6(1)(f)).',
           'To deliver and protect the website, Netlify processes technical connection data such as IP addresses and request logs under its own privacy statement. We do not consult those logs or use them to identify you.',
         ],
@@ -254,7 +254,7 @@ export const privacy: Record<Locale, PrivacyCopy> = {
         title: 'Cookies and browser storage',
         paragraphs: [
           'This website uses no cookies of any kind, whether for advertising, audience measurement or anything else, and includes no traffic-analysis tools. Fonts and all other resources are served from the website itself.',
-          'Your theme preference (light or dark) is stored only in your browser’s local storage, is never sent to us and can be cleared at any time in your browser settings.',
+          'Your theme preference (light or dark) is stored only in your browser’s local storage, is never sent to us and can be cleared at any time in your browser settings. The entry context described above (landing page, referring domain and campaign tags) stays in the browser’s session storage for the visit only and reaches us only if you submit a form.',
         ],
       },
       {

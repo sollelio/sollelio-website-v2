@@ -4,10 +4,10 @@ The Sollelio website: company homepage, Sollelio Events, the Founding Design Par
 programme and, later, Sollelio Beauty OS. Strategy and decisions live in [`docs/`](docs/README.md);
 this file covers running and editing the site.
 
-**Status: complete local website, not yet deployed.** Homepage, Sollelio Events, the Founding
+**Status: live at sollelio.com since 20 October 2026.** Homepage, Sollelio Events, the Founding
 Design Partners programme, Sollelio Beauty OS, confirmation and privacy pages, in pt-PT and
-English, light and dark. Forms are in demonstration mode (see "Forms"). Nothing here is deployed
-to sollelio.com; the publishing blockers are listed in docs/08.
+English, light and dark. Both forms submit to Netlify Forms (see "Forms") and the final privacy
+policy is published. Netlify deploys production from `main`.
 
 ## Stack
 
@@ -116,10 +116,16 @@ JavaScript the form validates inline and posts URL-encoded data to the page's ow
 moves to the confirmation page (partners) or shows the inline confirmation (Beauty OS); without
 JavaScript it posts natively and Netlify redirects to the form's `action`. On Netlify, enable
 form detection for the site and set the notification inbox in the UI; nothing else is needed.
-Accepting real submissions is still gated by the privacy page (docs/08, decision 6). `demo` mode
-keeps the same journey but sends nothing. Attribution fields (`utm_*`, referrer, landing page,
-language) are filled client-side and normally contain no personal data; the privacy policy covers
-the case where a referrer or campaign tag does.
+`demo` mode keeps the same journey but sends nothing.
+
+Attribution fields are filled client-side from the session's first-touch context
+(`src/scripts/attribution.ts`, run on every page from `Base.astro`): `utm_source`, `utm_medium`,
+`utm_campaign`, the external referrer's hostname and the landing path are captured once per
+browsing session in `sessionStorage`, so they survive internal navigation before the form; `lang`
+is the form's language. A direct-visit record is replaced if a campaign link is followed later in
+the session; a meaningful record is never overwritten. Values are length-limited, address-like
+values are dropped, and they normally contain no personal data; the privacy policy describes this
+and covers the case where a tag does.
 
 ## Common edits
 

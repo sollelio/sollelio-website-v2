@@ -7,6 +7,8 @@
  * Modes (src/config/site.ts): `demo` validates and confirms but sends
  * nothing; `netlify` posts URL-encoded data to Netlify Forms.
  */
+import { captureAttribution } from './attribution.ts';
+
 type Field = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
 
 function message(form: HTMLFormElement, key: 'required' | 'email' | 'group'): string {
@@ -45,13 +47,10 @@ function validateGroup(form: HTMLFormElement, group: HTMLElement): boolean {
 }
 
 function fillAttribution(form: HTMLFormElement): void {
-  const params = new URLSearchParams(location.search);
+  // First-touch attribution of the session (see attribution.ts); the page
+  // language is always the language of the form being submitted.
   const values: Record<string, string> = {
-    utm_source: params.get('utm_source') ?? '',
-    utm_medium: params.get('utm_medium') ?? '',
-    utm_campaign: params.get('utm_campaign') ?? '',
-    referrer: document.referrer ? new URL(document.referrer).hostname : '',
-    landing: location.pathname,
+    ...captureAttribution(),
     lang: document.documentElement.lang,
   };
   for (const [name, value] of Object.entries(values)) {
